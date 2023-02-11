@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search> 
+  
+  
+    
+    <entry>
+      <title>clickHouse</title>
+      <link href="/2023/02/11/clickHouse/"/>
+      <url>/2023/02/11/clickHouse/</url>
+      
+        <content type="html"><![CDATA[]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> clickHouse </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>fireReport</title>
+      <link href="/2023/02/11/fireReport/"/>
+      <url>/2023/02/11/fireReport/</url>
+      
+        <content type="html"><![CDATA[<h2 id="帆软普通报表入门示例"><a href="#帆软普通报表入门示例" class="headerlink" title="帆软普通报表入门示例"></a>帆软普通报表入门示例</h2><h3 id="1、概述"><a href="#1、概述" class="headerlink" title="1、概述"></a>1、概述</h3><p>​报表设计主要可以分为新建报表、数据准备、报表主体设计、报表预览几大部分。其中报表主体可以分为大标题、小标题、表格数据、结尾几大部分，本文主要以普通报表为例，讲述如何按照报表设计流程快速设计一张报表。</p><h4 id="1、1-预期效果"><a href="#1、1-预期效果" class="headerlink" title="1、1 预期效果"></a>1、1 预期效果</h4><p><img src="/2023/02/11/fireReport/image-20230117173031755.png" alt="image-20230117173031755"></p><h3 id="2、报表开发"><a href="#2、报表开发" class="headerlink" title="2、报表开发"></a>2、报表开发</h3><p>​新建数据连接，打开设计器，点击最上方菜单栏中「服务器&gt;定义数据连接」，弹出「定义数据连接」对话框，设计器已经默认连接了一个名为 FRDemo 的内置数据库，点击「测试链接」，弹出「连接成功」提示框，表示数据库 FRDemo 成功与设计器建立连接。</p><p><img src="/2023/02/11/fireReport/image-20230117173352327.png" alt="image-20230117173352327"></p><h4 id="2-2-新建报表"><a href="#2-2-新建报表" class="headerlink" title="2.2 新建报表"></a>2.2 新建报表</h4><p>​菜单栏点击「文件」可选择新建报表的类型，或点击快捷按钮<img src="https://help.fanruan.com/finereport/uploads/20220217/1645066223l8aC.png" alt="img">，快速新建一张空白的「普通报表」。如下图所示：</p><p><img src="https://help.fanruan.com/finereport/uploads/20220217/1645066260ZwPP.png" alt="img"></p><h4 id="2-3-准备数据"><a href="#2-3-准备数据" class="headerlink" title="2.3 准备数据"></a>2.3 准备数据</h4><p>​数据集是报表设计时的直接数据来源。数据集按照作用范围分为两种：服务器数据集 和 模板数据集。</p><p>服务器数据所有模版可用，模版数据集只有该模版才可用。</p><p>1）本示例在数据集管理面板中选择「模板数据集」，点击上方的【+】，新建【数据库查询】，输入 SQL 查询语句取出表中的所有数据。</p><p>ps：</p><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> </span><br><span class="line">rownum,</span><br><span class="line">cdsr.company_code,</span><br><span class="line">cdsr.business_account_period,</span><br><span class="line">cdsr.&quot;business_cost&quot;,</span><br><span class="line">t1.meaning <span class="keyword">as</span> &quot;business_task&quot;,</span><br><span class="line">cdsr.&quot;mkt&quot;,</span><br><span class="line">cdsr.&quot;pro&quot;,</span><br><span class="line">cdsr.&quot;sit&quot;,</span><br><span class="line">cdsr.&quot;ve2&quot;,</span><br><span class="line">cdsr.&quot;ntv&quot;,</span><br><span class="line">cdsr.&quot;stm&quot;,</span><br><span class="line">cdsr.&quot;dimension_amount&quot; cur_dimension_amount,</span><br><span class="line">(<span class="keyword">select</span> dimension_amount <span class="keyword">from</span> cdas_dms_summary_result <span class="keyword">where</span> </span><br><span class="line">&quot;business_account_period&quot; <span class="operator">=</span> to_char( ADD_MONTHS(to_date(cdsr.business_account_period,<span class="string">&#x27;yyyy-mm&#x27;</span>)</span><br><span class="line">,<span class="number">-1</span>),<span class="string">&#x27;yyyy-mm&#x27;</span>) </span><br><span class="line"> <span class="keyword">and</span> company_code <span class="operator">=</span> cdsr.company_code) last_dimension_amount</span><br><span class="line"><span class="keyword">from</span> cdas_dms_summary_result cdsr</span><br><span class="line"><span class="keyword">left</span> <span class="keyword">join</span> (<span class="keyword">select</span> <span class="keyword">value</span>,meaning <span class="keyword">from</span> hzero.hpfm_lov_value  <span class="keyword">where</span> lov_code <span class="operator">=</span> <span class="string">&#x27;CDIM.WORK_COST&#x27;</span>) t1 <span class="keyword">on</span> t1.value <span class="operator">=</span> cdsr.&quot;business_task&quot;</span><br><span class="line"><span class="keyword">where</span> </span><br><span class="line"><span class="number">1</span><span class="operator">=</span><span class="number">1</span></span><br><span class="line">$&#123;if(len(p_company_code) <span class="operator">=</span> <span class="number">0</span>,&quot;&quot;,</span><br><span class="line">    &quot;and cdsr.company_code in (&#x27;&quot; <span class="operator">+</span> p_company_code <span class="operator">+</span> &quot;&#x27;)&quot;</span><br><span class="line">  )&#125;</span><br><span class="line">$&#123;if(len(p_company_code) <span class="operator">=</span> <span class="number">0</span>,&quot;&quot;,</span><br><span class="line">    &quot;and cdsr.business_account_period in (&#x27;&quot; <span class="operator">+</span> p_period_name <span class="operator">+</span> &quot;&#x27;)&quot;</span><br><span class="line">  )&#125;</span><br><span class="line"><span class="keyword">order</span> <span class="keyword">by</span> cdsr.business_account_period</span><br></pre></td></tr></table></figure><p>2）新建好数据集之后，可在数据集管理面板查看取出的数据。</p><h4 id="2-4-标题设计"><a href="#2-4-标题设计" class="headerlink" title="2.4 标题设计"></a>2.4 标题设计</h4><p>按照自己的需求设计标题和表头，将数据集中的字段拖到对应要展示列的下方，如下所示</p><p><img src="/2023/02/11/fireReport/image-20230117174342841.png" alt="image-20230117174342841"></p><h4 id="2-5-设置父子格"><a href="#2-5-设置父子格" class="headerlink" title="2.5 设置父子格"></a>2.5 设置父子格</h4><p>​由于每个单元格均存在父子格关系，单元格会跟随父格扩展或计算，如下所示，在本例中，圈起来的字段是公司，是根据sql查询结果而变化的，属于动态字段，要设计其扩展方向向右扩展。</p><img src="/2023/02/11/fireReport/image-20230117175609792.png" alt="image-20230117175609792" style="zoom:50%;"><p>​然后设置子单元格的父格，使其可以随父格移动。</p><img src="/2023/02/11/fireReport/image-20230117175500072.png" alt="image-20230117175500072" style="zoom:50%;"><h4 id="2-6-设置查询参数"><a href="#2-6-设置查询参数" class="headerlink" title="2.6 设置查询参数"></a>2.6 设置查询参数</h4><p>​可以选择自己所需的控件（标签、下拉框或者多选下拉框），下面展示的是一个多选下拉框，主要设置：</p><p> 1、控件名称（p_company_code）这个参数将作为sql里面的引用变量。</p><p> 2、设置控件值为字符串，设置返回值类型为字符串，分隔符为’,’</p><p> 3、设置数据字典，可选择的数据字典类型有 4 种，其中包括「数据库表，数据查询，自定义，公式」，将分别对应不同应用场景。</p><p>ps ：使用如下方式传参</p><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$&#123;if(len(p_company_code) <span class="operator">=</span> <span class="number">0</span>,&quot;&quot;,</span><br><span class="line">    &quot;and cdsr.company_code in (&#x27;&quot; <span class="operator">+</span> p_company_code <span class="operator">+</span> &quot;&#x27;)&quot;</span><br><span class="line">  )&#125;</span><br></pre></td></tr></table></figure><img src="/2023/02/11/fireReport/image-20230117180637367.png" alt="image-20230117180637367" style="zoom:50%;"><img src="/2023/02/11/fireReport/image-20230117180715779.png" alt="image-20230117180715779" style="zoom: 50%;"><p>备注：如果预览列数展示不全分页了，可设置页面宽高为2000。</p>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> fireReport </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+  
+  
+</search>
